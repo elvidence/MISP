@@ -11,6 +11,10 @@ This script connects to a MISP (Malware Information Sharing Platform) instance, 
 and allows the user to delete tags based on a keyword match. It first displays matched tags with pagination
 for easier review, then prompts the user for confirmation before proceeding with deletion. This method enhances
 user control and prevents accidental deletion of unintended tags.
+
+
+# Ensure the 'requests' module is installed before running the script.
+# You can install it by running: pip install requests
 """
 
 import requests
