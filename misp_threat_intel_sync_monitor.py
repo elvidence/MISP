@@ -16,6 +16,9 @@ Results are categorised and presented in a structured format to aid in quick ass
 Inspired by a presentation from the MISP team.
 
 Future updates will include the implementation of logging functionality.
+
+Ensure the 'requests' module is installed before running the script.
+You can install it by running: pip install requests
 """
 
 import os
