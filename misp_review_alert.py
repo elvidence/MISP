@@ -10,6 +10,10 @@ This script fetches events tagged with the specified tag from a MISP instance an
 event requiring review. The script uses concurrency to enhance efficiency and includes dynamic email subject line
 adjustments based on the number of events requiring review.
 
+
+# Ensure the 'requests' module is installed before running the script.
+# You can install it by running: pip install requests
+
 License: MIT License
 """
 
