@@ -16,6 +16,9 @@ The script is highly adaptable, easily extended to handle other attribute types 
 
 Example Adaptation:
 To search for URLs instead of IP addresses, change the attribute type in the `misp_search` call from 'ip-dst' to 'url'.
+
+Ensure the 'requests' module is installed before running the script.
+You can install it by running: pip install requests
 """
 
 import os
