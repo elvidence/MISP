@@ -14,4 +14,10 @@ The script is highly adaptable, easily extended to handle other attribute types 
 Example Adaptation:
 To search for URLs instead of IP addresses, change the attribute type in the `misp_search` call from `ip-dst` to `url`.
 
+## misp_review_alert.py
+This script fetches events tagged with the specified tag from a MISP instance and sends an email notification for each
+event requiring review. The script uses concurrency to enhance efficiency and includes dynamic email subject line
+adjustments based on the number of events requiring review.
+
+
 
