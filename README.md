@@ -35,5 +35,11 @@ Future updates will include the implementation of logging functionality.
 ## misp_worker_monitor.py
 This script monitors the status of MISP workers and attempts to restart them if they are down. This should greatly improve MISPs stabailiy. It logs the worker status and sends email notifications if a worker fails to start after repeated attempts. For the email functionality to operate, the SMTP service must be configured and functioning properly. However, the script can operate without the email and logging features if necessary; these can be enabled or disabled as needed with the `email_enabled` and `log_file` settings. The `email_enabled` setting allows for turning off email notifications, while the `log_file` specifies the destination for log entries. The script is intended to be added to the crontab for the same user as MISP (typically `www-data` on Ubuntu installations).
 
+## ip_spec_ranges.py
+This function determines if the given IP address is part of designated non-public network ranges that include private networks, documentation, special protocols,
+and other non-routable uses. It handles both IPv4 and IPv6 addresses. This implementation provides a more comprehensive list of non-public IP ranges compared to commonly used libraries like netaddr, making it particularly suited for applications in threat intelligence cleaning and filtering. It ensures that all relevant special-use ranges are considered, minimising the risk of inadvertently processing or exposing these IPs in threat analysis environments.
+    
+
+
 
 
