@@ -2,6 +2,9 @@
 
 Welcome to the repository for enhancing [MISP](https://github.com/MISP/MISP/) (Malware Information Sharing Platform & Threat Sharing). This collection of tools aims to simplify the administration and improve the stability of MISP instances and also helps with Cyber Threat Intelligence (CTI) management. These utilities are designed to streamline processes and ensure a more robust platform, making it easier for administrators to manage MISP.
 
+The tools have been created with the aim of minimising the use of third-party Python modules as much as possible. The only exception is the requests library.
+
+
 ## misp_attr_async_get.py 
 Interacts with a MISP (Malware Information Sharing Platform) to concurrently search and
 retrieve details on cybersecurity events based on specific attributes, such as destination IP addresses ('ip-dst').
