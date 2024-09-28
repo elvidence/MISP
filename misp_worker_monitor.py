@@ -8,7 +8,7 @@ License: MIT
 
 Description:
 This script monitors the status of MISP workers and attempts to restart them if they are down.
-It logs the worker status and sends email notifications if a worker fails to start after repeated attempts.
+It logs the worker status and sends email notifications if a worker fails to start after (set number of) repeated attempts.
 The script is intended to be added to the crontab for the same user as MISP (typically www-data on Ubuntu installations).
 """
 
