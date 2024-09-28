@@ -12,7 +12,7 @@ It efficiently manages multiple network requests to enhance performance. Users c
 and API key, adapting to various operational environments. The script is developed in Python 3, ensuring compatibility
 with contemporary libraries and systems. 
 
-The script is highly adaptable, easily extended to handle other attribute types such as URLs, email addresses or hashes.
+The script is highly adaptable, easily extended to handle other attribute types such as URLs, domains, email addresses or hashes.
 
 Example Adaptation:
 To search for URLs instead of IP addresses, change the attribute type in the `misp_search` call from `ip-dst` to `url`.
