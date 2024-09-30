@@ -65,6 +65,7 @@ def is_non_public_ip(ip_address):
         ipaddress.ip_network('::1/128'),  # IPv6 loopback
         ipaddress.ip_network('fc00::/7'),  # IPv6 Unique local address
         ipaddress.ip_network('fe80::/10')  # IPv6 link-local
+        ipaddress.ip_network('2001:DB8::/32')  # Documentation (RFC 3849)
     ]
 
     # Check if the IP address belongs to any of the non-public ranges
