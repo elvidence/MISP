@@ -2,8 +2,8 @@
 # ------------------------------------------------------------------------------
 # Module Name: IP Special Ranges Checker
 # Author: A.R.
-# Version: 1.0
-# Last Modified: 15 Sep 2024
+# Version: 1.1
+# Last Modified: 20 Sep 2024
 # Description: This module provides a function to check if an IP address
 #              belongs to non-public (special and private) IP ranges. It is
 #              designed to be used in environments where accurate identification
