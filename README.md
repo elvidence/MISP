@@ -40,6 +40,9 @@ This script monitors the status of MISP workers and attempts to restart them if 
 
 ## ip_spec_ranges.py
 This mudule provides a function that determines if the given IP address is part of designated non-public network ranges that include private networks, documentation, special protocols, and other non-routable uses. It handles both IPv4 and IPv6 addresses. This implementation provides a more comprehensive list of non-public IP ranges compared to commonly used libraries like netaddr, making it particularly suited for applications in threat intelligence cleaning and filtering. It ensures that all relevant special-use ranges are considered, minimising the risk of inadvertently processing or exposing these IPs in threat analysis environments.
+> **Note**: The IPv6 address ranges `64:ff9b::/96` and `FF00::/8` are not included in the non-routable checks. `64:ff9b::/96` is used for IPv6 transition mechanisms (IPv4-IPv6 Network Prefix Translation), and while it is important for facilitating communication between IPv4 and IPv6 networks, it can be involved in specific security scenarios like address spoofing or obfuscation. `FF00::/8`, designated for IPv6 multicast, also holds significant implications in network operations and cybersecurity. It is used for efficient data distribution, but it can be exploited in amplification or DoS attacks. Monitoring and special handling of these ranges are recommended to address potential security threats effectively, rather than outright filtering as non-routable.
+
+
     
 
 
