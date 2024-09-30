@@ -43,7 +43,7 @@ This mudule provides a function that determines if the given IP address is part 
 > **Note**: The IPv6 address ranges `64:ff9b::/96` and `FF00::/8` are not included in the non-routable checks. `64:ff9b::/96` is used for IPv6 transition mechanisms (IPv4-IPv6 Network Prefix Translation), and while it is used for facilitating communication between IPv4 and IPv6 networks, it can be involved in specific security scenarios like address spoofing or obfuscation. `FF00::/8`, designated for IPv6 multicast. It is used for efficient data distribution, but it can be exploited in amplification or DoS attacks. Monitoring and special handling of these ranges can be important when addressing potential security threats.
 
 ## zero_noise_ips.py
-This script automates the integration of a large IP address feed into OpenCTI (Open Cyber Threat Intelligence) or MISP (Malware Information Sharing Platform). It reduces false positives by validating IPs against benign lists derived from MISP warnings, focusing on IPs that warrant further investigation.
+This script helps to automate the integration of a large IP address feed(s) into OpenCTI (Open Cyber Threat Intelligence) or MISP (Malware Information Sharing Platform). It reduces false positives by validating IPs against benign lists derived from MISP warnings, focusing on IPs that warrant further investigation.
 
 
 
