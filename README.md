@@ -44,6 +44,8 @@ This mudule provides a function that determines if the given IP address is part 
 
 ## zero_noise_ips.py
 This script helps to automate the integration of a large IP address feed(s) into OpenCTI (Open Cyber Threat Intelligence) or MISP (Malware Information Sharing Platform). It reduces false positives by validating IPs against benign lists derived from MISP warnings, focusing on IPs that warrant further investigation.
+Usage: `python3 zero_noise_ips.py feed_to_clean.txt`
+
 
 
 
