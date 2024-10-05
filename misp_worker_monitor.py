@@ -3,13 +3,17 @@
 """
 Author: A.R.
 Version: 1.1
-Date: 14 Apr 2024
+Date: 05 October 2024
 License: MIT
 
 Description:
 This script monitors the status of MISP workers and attempts to restart them if they are down.
 It logs the worker status and sends email notifications if a worker fails to start after (set number of) repeated attempts.
 The script is intended to be added to the crontab for the same user as MISP (typically www-data on Ubuntu installations).
+Please note that MISP 2.5, released in October 2024, now uses a Supervisor-based implementation. It is the default option 
+for new installations and for instances upgraded via the upgrade script. Therefore, this script is only relevant to MISP 
+versions below 2.5 that use workers.
+
 """
 
 import subprocess
