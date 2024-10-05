@@ -36,7 +36,7 @@ The script also checks the connectivity with other MISP instances for CTI and In
 Future updates will include the implementation of logging functionality.
 
 ## misp_worker_monitor.py
-!!!Please note that MISP 2.5, released in October 2024, now uses a Supervisor-based implementation. It is the default option for new installations and for instances upgraded via the upgrade script. Therefore, this script is only relevant to MISP versions below 2.5 that use workers.
+>Please note that MISP 2.5, released in October 2024, now uses a Supervisor-based implementation. It is the default option for new installations and for instances upgraded via the upgrade script. Therefore, this script is only relevant to MISP versions below 2.5 that use workers.
 
 This script monitors the status of MISP workers and attempts to restart them if they are down. This should greatly improve MISPs stabailiy. It logs the worker status and sends email notifications if a worker fails to start after repeated attempts. For the email functionality to operate, the SMTP service must be configured and functioning properly. However, the script can operate without the email and logging features if necessary; these can be enabled or disabled as needed with the `email_enabled` and `log_file` settings. The `email_enabled` setting allows for turning off email notifications, while the `log_file` specifies the destination for log entries. The script is intended to be added to the crontab for the same user as MISP (typically `www-data` on Ubuntu installations).
 
