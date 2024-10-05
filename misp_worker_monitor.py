@@ -2,7 +2,7 @@
 
 """
 Author: A.R.
-Version: 1.1
+Version: 1.2
 Date: 05 October 2024
 License: MIT
 
