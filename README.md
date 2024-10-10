@@ -48,6 +48,12 @@ This mudule provides a function that determines if the given IP address is part 
 This script helps to automate the integration of a large IP address feed(s) into OpenCTI (Open Cyber Threat Intelligence) or MISP (Malware Information Sharing Platform). It reduces false positives by validating IPs against benign lists derived from MISP warnings, focusing on IPs that warrant further investigation.
 Usage: `python3 zero_noise_ips.py feed_to_clean.txt`
 
+## cps_ioc_feed.py
+This script is designed to fetch indicators of compromise (IOCs) from CriticalPathSecurity Public-Intelligence-Feeds at GitHub, specifically related to log4j, and cobaltstrike IPs as well as cobaltstrike domains. It processes IOCs by removing duplicates and filtering out non-public, non-routable (RFC) or irrelevant (CDN etc) IP addresses using functions from zero_noise_ips.py. IOCs are then saved into separate CSV files based on their type (IPs or domains). The zero_noise_ips.py script must be located in the same directory as this script for proper IP validation. These CSV files are ready for ingestion by threat intelligence tools such as MISP (as local feeds), OpenCTI, or other Threat Intelligence platforms, ensuring clean and relaible Iindicators of Compromise.
+
+
+
+
 
 
 
