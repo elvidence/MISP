@@ -50,7 +50,7 @@ Usage: `python3 zero_noise_ips.py feed_to_clean.txt`
 
 ## cps_ioc_feed.py
 This script is designed to fetch indicators of compromise (IOCs) from CriticalPathSecurity Public-Intelligence-Feeds at GitHub, specifically related to log4j, and cobaltstrike IPs as well as cobaltstrike domains. It processes IOCs by removing duplicates and filtering out non-public, non-routable (RFC) or irrelevant (CDN etc) IP addresses using functions from zero_noise_ips.py. IOCs are then saved into separate CSV files based on their type (IPs or domains). The zero_noise_ips.py script must be located in the same directory as this script for proper IP validation. These CSV files are ready for ingestion by threat intelligence tools such as MISP (as local feeds), OpenCTI, or other Threat Intelligence platforms, ensuring clean and relaible Iindicators of Compromise. 
-### The scripts zero_noise_ips.py and cps_ioc_feed.py are intended for execution via cron jobs. It is crucial that zero_noise_ips.py is run first. This script retrieves the necessary data online and generates a consolidated JSON file containing the IPs. Following this, cps_ioc_feed.py utilises this data to clean the output. An upcoming version of cps_ioc_feed.py will incorporate this process internally, eliminating the need for separate cron scheduling.
+###### The scripts zero_noise_ips.py and cps_ioc_feed.py are intended for execution via cron jobs. It is crucial that zero_noise_ips.py is run first. This script retrieves the necessary data online and generates a consolidated JSON file containing the IPs. Following this, cps_ioc_feed.py utilises this data to clean the output. An upcoming version of cps_ioc_feed.py will incorporate this process internally, eliminating the need for separate cron scheduling.
 
 
 
