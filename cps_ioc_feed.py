@@ -1,15 +1,15 @@
 #!/var/www/MISP/venv/bin/python
 """
 Script Name: cps_ioc_feed.py
-Version: 2.0
-Date: 10/10/2024
+Version: 2.2
+Date: 11/10/2024
 Author: A.R.
-Purpose: Fetch and process IOCs from CriticalPathSecurity's GitHub, deduplicate, and output to CSV files. 
-         It filters IP addresses through the zero_noise_ips.py script to exclude non-public, non-routable and irrelevant IPs.
+Purpose: Fetch and process IOCs from CriticalPathSecurity's GitHub, deduplicate, and output to CSV files.
+         It filters IP addresses through the zero_noise_ips.py script to exclude non-public, non-routable, and irrelevant IPs.
 
 Details:
 - This script is designed to fetch indicators of compromise (IOCs) from CriticalPathSecurity GitHub URLs.
-- It processes IOCs by removing duplicates and filtering out non-public or irrelevatn IP addresses using functions from zero_noise_ips.py.
+- It processes IOCs by removing duplicates and filtering out non-public or irrelevant IP addresses using functions from zero_noise_ips.py.
 - IOCs are then saved into separate CSV files based on their type (IPs or domains).
 - The zero_noise_ips.py script must be located in the same directory as this script for proper IP validation.
 
@@ -23,12 +23,12 @@ import csv
 import os
 import logging
 import json
-from zero_noise_ips import is_non_public_ip  # Ensure zero_noise_ips.py is in the same directory.
+from zero_noise_ips import is_non_public_ip, update_consolidated_ips  # Import necessary functions
 
 # Setup logging
 logging.basicConfig(filename='/var/log/local_feeds.log',
                     level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - github2misp.py: %(message)s')
+                    format='%(asctime)s - %(levelname)s - cps_ioc_feed.py: %(message)s')
 
 # Directory and file setup
 BASE_URL = "/var/www/MISP/app/files/feeds/GitHub"
@@ -41,8 +41,18 @@ log4j_file = os.path.join(BASE_URL, 'log4j.csv')
 etag_file = os.path.join(BASE_URL, 'etags.json')
 
 # API and authentication (Credentials directly in the script)
-TOKEN = 'XXXXX'  # Replace with your actual token GitHub API
+TOKEN = 'XXXXX'  # Replace with your actual GitHub API token
 headers = {'Authorization': f'token {TOKEN}'}
+# Avoid hardcoding sensitive information like API tokens directly in the scripts.
+# Suggested use for production systems below:
+
+#import os
+#TOKEN = os.environ.get('GITHUB_TOKEN')
+#if not TOKEN:
+#    logging.error("GitHub token not found. Please set the GITHUB_TOKEN environment variable.")
+#    exit(1)
+#headers = {'Authorization': f'token {TOKEN}'}
+
 
 # Define URLs for IOCs
 urls = {
@@ -94,13 +104,33 @@ def write_to_csv(filename, iocs):
         for ioc in sorted(iocs):
             writer.writerow([ioc])
 
+# Update the consolidated IPs and load them into a set
+logging.info("Updating consolidated IPs from zero_noise_ips.py...")
+consolidated_ips_set = update_consolidated_ips()
+if not consolidated_ips_set:
+    with open('consolidated_ips.json', 'r') as file:
+        consolidated_ips_set = set(json.load(file))
+logging.info("Consolidated IPs have been updated.")
+
 # Process and write IOCs to CSV files if updated
 cobalt_strike_iocs, cobalt_strike_updated = fetch_iocs(urls['cobalt_strike'])
-cobalt_strike_iocs = {ioc for ioc in cobalt_strike_iocs if not is_non_public_ip(ioc)}
+# Filter out non-public IPs and IPs in consolidated_ips_set
+cobalt_strike_iocs = {
+    ioc for ioc in cobalt_strike_iocs
+    if not is_non_public_ip(ioc) and ioc not in consolidated_ips_set
+}
+logging.info("Applied filtering to cobalt_strike IOCs.")
+
 cobalt_strike_domains_iocs, cobalt_strike_domains_updated = fetch_iocs(urls['cobalt_strike_domains'])
+# No filtering applied to domain IOCs
 
 log4j_iocs, log4j_updated = fetch_iocs(urls['log4j'])
-log4j_iocs = {ioc for ioc in log4j_iocs if not is_non_public_ip(ioc)}
+# Filter out non-public IPs and IPs in consolidated_ips_set
+log4j_iocs = {
+    ioc for ioc in log4j_iocs
+    if not is_non_public_ip(ioc) and ioc not in consolidated_ips_set
+}
+logging.info("Applied filtering to log4j IOCs.")
 
 if cobalt_strike_updated:
     write_to_csv(cobalt_strike_file, cobalt_strike_iocs)
