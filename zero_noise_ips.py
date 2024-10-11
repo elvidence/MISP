@@ -2,8 +2,8 @@
 
 """
 Author: A.R.
-Version: 0.1b
-Date: 30 Sep 2024
+Version: 0.2b
+Date: 11 October 2024
 License: MIT
 
 Description: This script automates the integration of a large IP address feed(s) into OpenCTI (Open Cyber Threat Intelligence) 
@@ -132,45 +132,32 @@ def clean_ip_list(filename: str, consolidated_ips: Set[str]) -> None:
 
     print(f"Cleaned IP list saved to {new_filename}")
 
-def main() -> None:
-    # Get the input filename from the command-line argument
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <filename>")
-        sys.exit(1)
-
-    input_filename = sys.argv[1]
-
+def update_consolidated_ips() -> Set[str]:
     # Build full URLs from the base URL and file names
     urls = [f"{BASE_URL}{name}/list.json" for name in FILE_NAMES]
 
     etag_data = get_etag_data()
     ip_set = set()  # Set to store all unique IPs
 
-    # Step 1: Check if consolidated_ips.json exists and is not empty
-    if not os.path.exists('consolidated_ips.json') or os.path.getsize('consolidated_ips.json') == 0:
-        print("consolidated_ips.json doesn't exist or is empty. Fetching IPs...")
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {executor.submit(fetch_and_extract_ips, url, etag_data, ip_set): url for url in urls}
-            for future in concurrent.futures.as_completed(futures):
-                url = futures[future]
-                try:
-                    result = future.result()
-                    print(f"Update status for {url}: {result}")
-                except Exception as exc:
-                    print(f"{url} generated an exception: {exc}")
+    # Check if consolidated_ips.json exists and is not empty
+    consolidated_exists = os.path.exists('consolidated_ips.json') and os.path.getsize('consolidated_ips.json') > 0
 
-        # Save the new consolidated IPs, replacing the old file
-        save_all_ips(ip_set)
+    # Determine if any updates are required by checking ETags
+    updates_required = False
+    for url in urls:
+        headers = {}
+        if url in etag_data:
+            headers['If-None-Match'] = etag_data[url]['etag']
+        try:
+            response = requests.head(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                updates_required = True
+                break
+        except requests.RequestException as e:
+            print(f"Failed to check {url}: {e}")
 
-    # Step 2: If consolidated_ips.json exists and updates are not required, load and clean
-    elif all(not fetch_and_extract_ips(url, etag_data, ip_set) for url in urls):
-        print("No updates required. Using existing consolidated_ips.json")
-        with open('consolidated_ips.json', 'r') as file:
-            ip_set = set(json.load(file))  # Use the existing consolidated IPs
-
-    # Step 3: If updates are required, fetch new IPs, overwrite the file, and clean
-    else:
-        print("Fetching new updates and overwriting consolidated_ips.json")
+    if not consolidated_exists or updates_required:
+        print("Fetching updates and updating consolidated_ips.json...")
         ip_set.clear()  # Clear old data before overwriting
         with concurrent.futures.ThreadPoolExecutor() as executor:
             futures = {executor.submit(fetch_and_extract_ips, url, etag_data, ip_set): url for url in urls}
@@ -181,11 +168,31 @@ def main() -> None:
                     print(f"Update status for {url}: {result}")
                 except Exception as exc:
                     print(f"{url} generated an exception: {exc}")
-
         save_all_ips(ip_set)
+    else:
+        print("No updates required. Using existing consolidated_ips.json")
+        with open('consolidated_ips.json', 'r') as file:
+            ip_set = set(json.load(file))
 
-    # Step 4: Clean the input IP list using the consolidated IPs
-    clean_ip_list(input_filename, ip_set)
+    return ip_set
+
+def main() -> None:
+    # Check the number of command-line arguments
+    if len(sys.argv) == 1:
+        print("No input file provided. Updating consolidated_ips.json only.")
+        update_consolidated_ips()
+    elif len(sys.argv) == 2:
+        input_filename = sys.argv[1]
+        if not os.path.isfile(input_filename):
+            print(f"Error: The file '{input_filename}' does not exist.")
+            sys.exit(1)
+        # Update the consolidated IPs and clean the input file
+        ip_set = update_consolidated_ips()
+        clean_ip_list(input_filename, ip_set)
+    else:
+        print("Usage: python script.py [<filename>]")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
+
