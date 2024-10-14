@@ -51,7 +51,7 @@ Usage: `python3 zero_noise_ips.py feed_to_clean.txt`. To update the consolidated
 ## cps_ioc_feed.py
 This script is designed to fetch indicators of compromise (IOCs) from CriticalPathSecurity Public-Intelligence-Feeds at GitHub, specifically related to log4j, and cobaltstrike IPs as well as cobaltstrike domains. It processes IOCs by removing duplicates and filtering out non-public, non-routable (RFC) or irrelevant (CDN etc) IP addresses using functions from zero_noise_ips.py. IOCs are then saved into separate CSV files based on their type (IPs or domains). The zero_noise_ips.py script must be located in the same directory as this script for proper IP validation. These CSV files are ready for ingestion by threat intelligence tools such as MISP (as local feeds), OpenCTI, or other Threat Intelligence platforms, ensuring clean and relaible Iindicators of Compromise. 
 
-## abuseipdb_filter.py
+## abuseipdb_ioc_feed.py
 This script, similar to cps_ioc_feed.py, fetches indicators of compromise (IOCs) from AbuseIPDB (API key required) and processes them by removing duplicates and filtering out non-public, non-routable IP addresses (per RFC standards), as well as irrelevant IPs (e.g., from CDNs). It leverages functions from zero_noise_ips.py, which must be in the same directory for accurate IP validation.
 
 
