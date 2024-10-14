@@ -54,6 +54,11 @@ This script is designed to fetch indicators of compromise (IOCs) from CriticalPa
 ## abuseipdb_ioc_feed.py
 This script, similar to cps_ioc_feed.py, fetches indicators of compromise (IOCs) from AbuseIPDB (API key required) and processes them by removing duplicates and filtering out non-public, non-routable IP addresses (per RFC standards), as well as irrelevant IPs (e.g., from CDNs). It leverages functions from zero_noise_ips.py, which must be in the same directory for accurate IP validation.
 
+## haas_ioc_feed.py
+This script, similar to cps_ioc_feed.py and abuseipdb_ioc_feed.py, fetches indicators of compromise (IOCs) from the Honeypot as a Service (HaaS) feed provided by haas.nic.cz. It processes the data by unpacking, removing duplicates and filtering out non-public, non-routable IP addresses (per RFC standards), as well as excluding irrelevant IPs, such as those from content delivery networks (CDNs). The script relies on functions from zero_noise_ips.py, which should be in the same directory for accurate IP validation.
+
+The data is provided by haas.nic.cz in a daily YYYY-MM-DD.json.gz format (e.g., 2024-10-01.json.gz published on 02-Oct-2024 around 01:01 AM) and is updated daily at about the same time. To ensure timely processing, it is essential to use cron to schedule the script's execution to match the data publication times.
+
 
 
 
