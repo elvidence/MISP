@@ -59,6 +59,26 @@ This script, similar to cps_ioc_feed.py and abuseipdb_ioc_feed.py, fetches indic
 
 The data is provided by haas.nic.cz in a daily YYYY-MM-DD.json.gz format (e.g., 2024-10-01.json.gz published on 02-Oct-2024 around 01:01 AM) and is updated daily at about the same time. To ensure timely processing, it is essential to use cron to schedule the script's execution to match the data publication times.
 
+## malwarepatrol_ioc_feed.py
+
+This script, similar to cps_ioc_feed.py, haas_ioc_feed.py and abuseipdb_ioc_feed.py, fetches indicators of compromise (IOCs) from the MalwarePatrol feed. It processes the data by downloading a gzipped file, unpacking it, removing duplicates, and filtering out non-public, non-routable IP addresses (per RFC standards), as well as excluding irrelevant IPs, such as those from content delivery networks (CDNs). The script relies on functions from zero_noise_ips.py, which should be in the same directory for accurate IP validation.
+
+Important Notes:
+Ensure that the directories specified in the script (download_directory and extract_directory) exist or can be created by the script. The script will attempt to create these directories if they do not exist. Verify that the script has the necessary execution permissions. You may need to adjust file permissions using chmod if required. On MISP it typically runs as www-data.
+
+The script requires the requests library. Install it using pip install requests.
+The script logs all activities and any issues encountered to /var/log/local_feeds.log. 
+To ensure timely processing, it is essential to use cron to schedule the script's execution to match the data publication times.
+
+Example cron Entry:
+
+To run the script every day at 2:00 AM, add the following line to your crontab:
+```bash
+0 2 * * * /var/www/MISP/venv/bin/python /path/to/malwarepatrol_feed_fetcher.py
+```
+
+
+
 
 
 
