@@ -71,7 +71,6 @@ The script logs all activities and any issues encountered to /var/log/local_feed
 To ensure timely processing, it is essential to use cron to schedule the script's execution to match the data publication times.
 
 Example cron Entry:
-
 To run the script every day at 2:00 AM, add the following line to your crontab:
 ```bash
 0 2 * * * /var/www/MISP/venv/bin/python /path/to/malwarepatrol_feed_fetcher.py
